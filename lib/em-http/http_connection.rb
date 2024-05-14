@@ -144,7 +144,7 @@ module EventMachine
         #
         # (As mentioned above, unless something has gone very wrong, these two
         # certificates should be identical.)
-        unless server_certificate == @peer_certificate_chain.last
+        unless server_certificate.to_der == @peer_certificate_chain.last.to_der
           raise OpenSSL::SSL::SSLError.new(%(Peer certificate sense check failed for "#{host}"));
         end
 
