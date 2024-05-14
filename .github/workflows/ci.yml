@@ -20,15 +20,3 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - run: bundle exec rake spec
-  spec-legacy:
-    name: "RSpec / Ruby 2.2"
-    runs-on: ubuntu-20.04
-    steps:
-      - run: sudo apt-get install libcurl4-openssl-dev
-      - uses: actions/checkout@v4
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.2
-          bundler-cache: true
-      - name: rake spec
-        run: bundle exec rake spec

@@ -94,6 +94,16 @@ module EventMachine
       end
 
       def ssl_handshake_completed
+        # Warning message updated by Ably — the previous message suggested that
+        # when verify_peer is false, the server certificate would be verified
+        # but not checked against the hostname. This is not true — when
+        # verify_peer is false, the server certificate is not verified at all.
+        unless verify_peer?
+          warn "[WARNING; ably-em-http-request] TLS server certificate validation is disabled (use 'tls: {verify_peer: true}'), see" +
+               " CVE-2020-13482 and https://github.com/igrigorik/em-http-request/issues/339 for details" unless parent.connopts.tls.has_key?(:verify_peer)
+          return true
+        end
+
         # It’s not great to have to perform the server certificate verification
         # after the handshake has completed, because it means:
         #
@@ -134,7 +144,7 @@ module EventMachine
         #
         # (As mentioned above, unless something has gone very wrong, these two
         # certificates should be identical.)
-        unless server_certificate == @peer_certificate_chain.last
+        unless server_certificate.to_der == @peer_certificate_chain.last.to_der
           raise OpenSSL::SSL::SSLError.new(%(Peer certificate sense check failed for "#{host}"));
         end
 
@@ -142,12 +152,6 @@ module EventMachine
         # aided by the intermediate certificates provided by the server.
         unless create_certificate_store.verify(server_certificate, @peer_certificate_chain[0...-1])
           raise OpenSSL::SSL::SSLError.new(%(unable to verify the server certificate for "#{host}"))
-        end
-
-        unless verify_peer?
-          warn "[WARNING; ably-em-http-request] TLS hostname validation is disabled (use 'tls: {verify_peer: true}'), see" +
-               " CVE-2020-13482 and https://github.com/igrigorik/em-http-request/issues/339 for details" unless parent.connopts.tls.has_key?(:verify_peer)
-          return true
         end
 
         # Verify that the peer’s certificate matches the hostname.
