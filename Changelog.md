@@ -1,10 +1,20 @@
 # Changelog
 
-## master
+## Ably fork changelog
+
+### 1.1.8
+
+#### Bug fixes
+
+- Fix server certificate validation ([#2](https://github.com/ably-forks/em-http-request/pull/2))
+
+## Original changelog (appears that the author stopped updating this at some point)
+
+### master
 
 - User-Agent header is now removed if set to nil.
 
-## 1.0.0.beta.1 / 2011-02-20 - The big rewrite
+### 1.0.0.beta.1 / 2011-02-20 - The big rewrite
 
 - Switched parser from Ragel to http_parser.rb
 - Removed em_buffer C extension
@@ -14,7 +24,7 @@
 - Refactored & split all tests
 - Basic 100-Continue handling on POST/PUT
 
-## 0.3.0 / 2011-01-15
+### 0.3.0 / 2011-01-15
 
 - IMPORTANT: default to non-persistent connections (timeout => 0 now requires :keepalive => true)
 - see: https://github.com/igrigorik/em-http-request/commit/1ca5b608e876c18fa6cfa318d0685dcf5b974e09
@@ -27,21 +37,21 @@
 - bugfix: more robust Encoding detection
 
 
-## 0.2.15 / 2010-11-18
+### 0.2.15 / 2010-11-18
 
 - bugfix: follow redirects on missing content-length
 - bugfix: fixed undefined warnings when running in strict mode
 
-## 0.2.14 / 2010-10-06
+### 0.2.14 / 2010-10-06
 
 - bugfix: form-encode keys/values of ruby objects passed in as body
 
-## 0.2.13 / 2010-09-25
+### 0.2.13 / 2010-09-25
 
 - added SOCKS5 proxy support
 - bugfix: follow redirects on HEAD requests
 
-## 0.2.12 / 2010-09-12
+### 0.2.12 / 2010-09-12
 
 - added headers callback (http.headers {|h| p h})
 - added .close method on client obj to terminate session (accepts message)
@@ -50,7 +60,7 @@
 - bugfix: handle bad Location host redirects
 - bugfix: reset host override on connect
 
-## 0.2.11 / 2010-08-16
+### 0.2.11 / 2010-08-16
 
 - all URIs are now normalized prior to dispatch (and on redirect)
 - default to direct proxy (instead of CONNECT handshake) - better performance
